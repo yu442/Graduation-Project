@@ -257,8 +257,8 @@ def PreCar(a,s,Env):
     return s_,r,done
 reward = []
 reward_step = []
-speed_step = []
-position_step = []
+speed_step = [[],[],[],[]]
+position_step = [[],[],[],[]]
 for i in range(MAX_EPISODES):
     s1 = Env1.reset(80, 60, 8)
     s1 = np.array(s1)
@@ -272,7 +272,8 @@ for i in range(MAX_EPISODES):
     for j in range(MAX_EP_STEPS):
         # Add exploration noise
         if i == 1199:
-            position_step.append(Env1.pm)
+            position_step[0].append(Env1.pm)
+            speed_step[0].append(Env1.vm)
         # 第一队辆车
         a1 = actor.choose_action(s1)
         a1 = np.clip(np.random.normal(a1, var), -2, 2)    # add randomness to action selection for exploration
@@ -282,7 +283,9 @@ for i in range(MAX_EPISODES):
         # if j == MAX_EP_STEPS-1 or done1:
             # print("ENV1"'Episode:', i, ' Reward: %i' % int(ep_reward[0]/j), 'Explore: %.2f' % var, 'step: ',j,'speed: ',Env1.vm,'observation: ',Env1.observation)
             break
-
+        if i == 1199:
+            position_step[1].append(Env2.pm)
+            speed_step[1].append(Env2.vm)
         # 第二队辆车
         s2 = Env2.render(Env1.vm,Env1.pm)
         s2 = np.array(s2)
@@ -295,7 +298,9 @@ for i in range(MAX_EPISODES):
             # print('Episode:', i, ' Reward: %i' % int(ep_reward[1]/j), 'Explore: %.2f' % var, 'step: ',j,'speed: ',
             #       Env2.vm,'observation: ',Env2.observation)
             break
-
+        if i == 1199:
+            position_step[2].append(Env3.pm)
+            speed_step[2].append(Env3.vm)
         # 第三队辆车
         s3 = Env3.render(Env2.vm, Env2.pm)
         s3 = np.array(s3)
@@ -308,7 +313,9 @@ for i in range(MAX_EPISODES):
         #     print('Episode:', i, ' Reward: %i' % int(ep_reward[2] / j), 'Explore: %.2f' % var, 'step: ', j, 'speed: ',
         #           Env3.vm, 'observation: ', Env3.observation)
             break
-
+        if i == 1199:
+            position_step[3].append(Env4.pm)
+            speed_step[3].append(Env4.vm)
         # 第四队辆车
         s4 = Env4.render(Env3.vm, Env3.pm)
         s4 = np.array(s4)
@@ -326,9 +333,24 @@ for i in range(MAX_EPISODES):
     #     reward.append(ep_reward/j)
 x = np.arange(200)
 plt.plot(x, 8 * x + 80)
-plt.plot(np.arange(len(position_step)), position_step)
-plt.legend(['PL','PM1'], loc = 'upper left')
+plt.plot(np.arange(len(position_step[0])), position_step[0])
+plt.plot(np.arange(len(position_step[1])), position_step[1])
+plt.plot(np.arange(len(position_step[2])), position_step[2])
+plt.plot(np.arange(len(position_step[3])), position_step[3])
+plt.legend(['PL','PM1','PM2','PM3','PM4'], loc = 'upper left')
 plt.ylabel("Position")
+plt.xlabel("Episode")
+plt.show()
+
+y = np.arange(200)
+z = np.zeros(200)
+plt.plot(y, z + 8)
+plt.plot(np.arange(len(speed_step[0])), speed_step[0])
+plt.plot(np.arange(len(speed_step[1])), speed_step[1])
+plt.plot(np.arange(len(speed_step[2])), speed_step[2])
+plt.plot(np.arange(len(speed_step[3])), speed_step[3])
+plt.legend(['PL','PM1','PM2','PM3','PM4'], loc = 'upper left')
+plt.ylabel("Speed")
 plt.xlabel("Episode")
 plt.show()
 

@@ -90,35 +90,15 @@ class Car():
             self.pl += self.vl
         s[0] = self.pl - self.pm
         s[1] = self.vl - self.vm
-        # 速度和位置变化
-        # if s[1] + a > self.max:
-        #     s[1] = self.max
-        #     s[0] += s[1]
-        #     self.pl += self.vl
-        # elif s[1] + a < self.min:
-        #     s[1] = s[1]
-        #     s[0] += s[1]
-        #     self.pl += self.vl
-        # else:
-        #     s[1] += a
-        #     s[0] += s[1]
-        #     self.pl += self.vl
-        # 奖励函数
+
         if self.iscollsion(s) == True:
             reward += -1000
             done = True
         else:
-            # reward_tem = (-(self.pq * ((self.pl - s[0] -self.target)** 2) + self.vq * ((self.vl - s[1]) ** 2)) / 100)
-            # reward = reward_tem
-            # done = False
+
             reward += -(self.pq * (s[0]) ** 2 + self.vq * (s[1]) ** 2)/100
             done = False
         return s,reward,done
-    # 刷新环境
-    # def render(self,s):
-    #     self.observation = s
-    #     self.pm = s[0]
-    #     self.vm = s[1]
 
 
 

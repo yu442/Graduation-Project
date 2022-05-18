@@ -15,7 +15,7 @@ import numpy as np
 import gym
 import time
 import random
-from Car_env3 import Car
+from Car_envNet import Car
 
 np.random.seed(1)
 tf.set_random_seed(1)

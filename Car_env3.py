@@ -23,7 +23,7 @@ class Car():
         self.pm = 0
         self.vm = 0
         # 位置参数和速度参数
-        self.pq = 5
+        self.pq = 100
         self.vq = 10
         # 仿真步长
         self.t = 1
@@ -36,21 +36,17 @@ class Car():
     # 初始化每辆车的速度
     # vm = [10, random.randint(5, 15), random.randint(5, 15), random.randint(5, 15)]
     # 获取状态S
-    def reset(self,
-              pl,
-              pm,
-              vl,
-    ):
+    def reset(self):
         self.st = 0
         # 设置每辆车的位置,每辆车间距100m
-        self.pl = pl
-        self.pm = pm
+        self.pl = 50
+        self.pm = 0
         # 初始化每辆车的速度
-        self.vl = vl
+        self.vl = 10
         # self.vm = random.randint(5, 15)
         self.vm = 6
         self.max = 15
-        self.observation[0] = self.pl - self.pm
+        self.observation[0] = self.pl - self.pm - self.target
         self.observation[1] = self.vl - self.vm
         return self.observation
 
@@ -92,7 +88,7 @@ class Car():
         s[1] = self.vl - self.vm
 
         if self.iscollsion(s) == True:
-            reward += -1000
+            reward += -10000
             done = True
         else:
 

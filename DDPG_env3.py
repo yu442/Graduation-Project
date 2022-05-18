@@ -9,6 +9,8 @@ Using:
 tensorflow 1.0
 gym 0.8.0
 """
+import random
+
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
@@ -21,7 +23,7 @@ tf.set_random_seed(1)
 
 #####################  hyper parameters  ####################
 
-MAX_EPISODES = 1500
+MAX_EPISODES = 1725
 MAX_EP_STEPS = 200
 LR_A = 0.001    # learning rate for actor
 LR_C = 0.001    # learning rate for critic
@@ -31,7 +33,7 @@ REPLACEMENT = [
     dict(name='hard', rep_iter_a=600, rep_iter_c=500)
 ][0]            # you can try different target replacement strategies
 MEMORY_CAPACITY = 10000
-BATCH_SIZE = 32
+BATCH_SIZE = 2
 
 RENDER = False
 OUTPUT_GRAPH = False
@@ -240,16 +242,25 @@ t1 = time.time()
 reward = []
 reward_step = []
 speed_step = []
+target_step = []
+actual_step = []
 for i in range(MAX_EPISODES):
     s = Env.reset()
     s = np.array(s)
     ep_reward = 0
     for j in range(MAX_EP_STEPS):
         # Add exploration noise
+
+
+        Env.target = random.uniform(10,20)
+
         a = actor.choose_action(s)
         a = np.clip(np.random.normal(a, var), -2, 2)    # add randomness to action selection for exploration
         s_, r, done = Env.step(a)
         s_ = np.array(s_)
+        if i == 1724:
+            target_step.append(Env.target)
+            actual_step.append(Env.target + s_[0])
         M.store_transition(s, a, r / 10, s_)
         if M.pointer > MEMORY_CAPACITY:
             var *= .9999    # decay the action randomness
@@ -272,12 +283,18 @@ for i in range(MAX_EPISODES):
             break
     if i % 10 == 0:
         reward.append(ep_reward/j)
-
-plt.plot(np.arange(len(reward)),reward)
-plt.ylabel("Reward")
-plt.xlabel("Episode")
+plt.rcParams['font.sans-serif'] = [u'SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+# plt.plot(np.arange(len(reward)),reward)
+# plt.ylabel("Reward")
+# plt.xlabel("Episode")
+# plt.show()
+plt.plot(np.arange(len(target_step)),target_step)
+plt.plot(np.arange(len(actual_step)),actual_step)
+plt.legend(["期望车距","实际车距"],loc = "upper left")
+plt.ylabel("距离/m")
+plt.xlabel("时间/s")
 plt.show()
-
 # plt.plot(np.arange(len(reward_step)),reward_step)
 # plt.ylabel("Reward For Each Step")
 # plt.xlabel("Step")

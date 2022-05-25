@@ -32,7 +32,6 @@ REPLACEMENT = [
 ][0]            # you can try different target replacement strategies
 MEMORY_CAPACITY = 10000
 BATCH_SIZE = 32
-
 RENDER = False
 OUTPUT_GRAPH = False
 

@@ -258,9 +258,9 @@ for i in range(MAX_EPISODES):
         a = np.clip(np.random.normal(a, var), -2, 2)    # add randomness to action selection for exploration
         s_, r, done = Env.step(a)
         s_ = np.array(s_)
-        if i == 1724:
-            target_step.append(Env.target)
-            actual_step.append(Env.target + s_[0])
+        # if i == 1724:
+        #     target_step.append(Env.target)
+        #     actual_step.append(Env.target + s_[0])
         M.store_transition(s, a, r / 10, s_)
         if M.pointer > MEMORY_CAPACITY:
             var *= .9999    # decay the action randomness
@@ -271,9 +271,9 @@ for i in range(MAX_EPISODES):
             b_s_ = b_M[:, -state_dim:]
             critic.learn(b_s, b_a, b_r, b_s_)
             actor.learn(b_s)
-        # if i == 999:
-        #     reward_step.append(r)
-        #     speed_step.append(s[1])
+        if i == 999:
+            reward_step.append(r)
+            speed_step.append(s[1])
         s = s_
         # print(Env.pl,s)
         ep_reward += r
@@ -289,12 +289,12 @@ plt.rcParams['axes.unicode_minus'] = False
 # plt.ylabel("Reward")
 # plt.xlabel("Episode")
 # plt.show()
-plt.plot(np.arange(len(target_step)),target_step)
-plt.plot(np.arange(len(actual_step)),actual_step)
-plt.legend(["期望车距","实际车距"],loc = "upper left")
-plt.ylabel("距离/m")
-plt.xlabel("时间/s")
-plt.show()
+# plt.plot(np.arange(len(target_step)),target_step)
+# plt.plot(np.arange(len(actual_step)),actual_step)
+# plt.legend(["期望车距","实际车距"],loc = "upper left")
+# plt.ylabel("距离/m")
+# plt.xlabel("时间/s")
+# plt.show()
 # plt.plot(np.arange(len(reward_step)),reward_step)
 # plt.ylabel("Reward For Each Step")
 # plt.xlabel("Step")

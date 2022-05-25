@@ -11,7 +11,7 @@ tf.set_random_seed(1)
 
 #####################  hyper parameters  ####################
 
-MAX_EPISODES = 500
+MAX_EPISODES = 1000
 MAX_EP_STEPS = 200
 LR_A = 0.001    # learning rate for actor
 LR_C = 0.001    # learning rate for critic
@@ -263,7 +263,7 @@ for i in range(MAX_EPISODES):
         # Add exploration noise
 
         # 第一队辆车
-        Env1.vl = random.uniform(9,12)
+        # Env1.vl = random.uniform(9,12)
         a1 = actor.choose_action(s1)
         a1 = np.clip(np.random.normal(a1, var), -2, 2)    # add randomness to action selection for exploration
         s1, r1, done1 = PreCar(a1,s1,Env1)
@@ -272,12 +272,12 @@ for i in range(MAX_EPISODES):
         # if j == MAX_EP_STEPS-1 or done1:
             # print("ENV1"'Episode:', i, ' Reward: %i' % int(ep_reward[0]/j), 'Explore: %.2f' % var, 'step: ',j,'speed: ',Env1.vm,'observation: ',Env1.observation)
             break
-        if i == 499:
+        if i == 999:
             position_step[0].append(Env1.pl)
             speed_step[0].append(Env1.vl)
             position_step[1].append(Env1.pm)
             speed_step[1].append(Env1.vm)
-        if i == 499:
+        if i == 999:
             position_step[2].append(Env2.pm)
             speed_step[2].append(Env2.vm)
         # 第二队辆车
@@ -292,7 +292,7 @@ for i in range(MAX_EPISODES):
             # print('Episode:', i, ' Reward: %i' % int(ep_reward[1]/j), 'Explore: %.2f' % var, 'step: ',j,'speed: ',
             #       Env2.vm,'observation: ',Env2.observation)
             break
-        if i == 499:
+        if i == 999:
             position_step[3].append(Env3.pm)
             speed_step[3].append(Env3.vm)
         # 第三队辆车
@@ -307,7 +307,7 @@ for i in range(MAX_EPISODES):
         #     print('Episode:', i, ' Reward: %i' % int(ep_reward[2] / j), 'Explore: %.2f' % var, 'step: ', j, 'speed: ',
         #           Env3.vm, 'observation: ', Env3.observation)
             break
-        if i == 499:
+        if i == 999:
             position_step[4].append(Env4.pm)
             speed_step[4].append(Env4.vm)
         # 第四队辆车
@@ -326,7 +326,8 @@ for i in range(MAX_EPISODES):
     # if i % 10 == 0:
     #     reward.append(ep_reward/j)
 
-
+plt.rcParams['font.sans-serif'] = [u'SimHei']
+plt.rcParams['axes.unicode_minus'] = False
 plt.plot(np.arange(len(position_step[0])), position_step[0])
 plt.plot(np.arange(len(position_step[1])), position_step[1])
 plt.plot(np.arange(len(position_step[2])), position_step[2])
@@ -334,7 +335,7 @@ plt.plot(np.arange(len(position_step[3])), position_step[3])
 plt.plot(np.arange(len(position_step[4])), position_step[4])
 plt.legend(['PL','PM1','PM2','PM3','PM4'], loc = 'upper left')
 plt.ylabel("Position")
-plt.xlabel("Episode")
+plt.xlabel("时间/s")
 plt.show()
 
 
@@ -345,7 +346,7 @@ plt.plot(np.arange(len(speed_step[3])), speed_step[3])
 plt.plot(np.arange(len(speed_step[4])), speed_step[4])
 plt.legend(['PL','PM1','PM2','PM3','PM4'], loc = 'upper left')
 plt.ylabel("Speed")
-plt.xlabel("Episode")
+plt.xlabel("时间/s")
 plt.show()
 
 # plt.plot(np.arange(len(reward)),reward)

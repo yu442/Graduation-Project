@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+
+   <vType id="CarA" length="5" maxSpeed="10" />
+   
+    <flow id="a11" color="1,1,0"  begin="0" end= "10" number='5' type="CarA" departLane="random" departSpeed="max">
+     <route edges="E0"/>
+    </flow>
+    
+</routes>
